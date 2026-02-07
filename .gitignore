@@ -36,6 +36,7 @@ env/
 dist/
 build/
 *.egg-info/
+uv.lock
 
 # -------------------------
 # IDE / Editor files
