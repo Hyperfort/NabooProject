@@ -16,7 +16,7 @@ Install
 1. Create a virtual environment and activate it:
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv --prompt="NabooProject"
 source .venv/bin/activate
 ```
 
@@ -97,5 +97,5 @@ Unit tests are provided in the `tests/` directory and use `pytest` (including `p
 
 ```bash
 # run the test suite
-.venv/bin/pytest
+pytest --verbose
 ```
