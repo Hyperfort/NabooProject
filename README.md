@@ -1,39 +1,92 @@
 # NabooProject
 
-An unofficial Star Wars‑inspired API that provides structured data about characters, factions, spaceships, and worlds—built for developers who want a simple, modern way to explore a galaxy’s worth of information.
+An unofficial Star Wars–inspired REST API built with FastAPI and Motor (async MongoDB). It exposes simple endpoints for characters, factions, spaceships, and worlds so you can quickly explore or prototype against a small galaxy dataset.
 
-## Quick Start
+Key features
+- FastAPI app with lifespan-managed MongoDB connection
+- Pydantic v2 models and custom ObjectId handling
+- Async MongoDB access via Motor
+- OpenAPI docs auto-generated at /docs and /redoc
 
-### Start the development server
+Prerequisites
+- Python 3.12+
+- A running MongoDB instance and connection URI
+
+Install
+1. Create a virtual environment and activate it:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+2. Install dependencies:
+
+```bash
+pip install -e ".[dev]" || pip install -r <your dependency list or use pyproject.toml>
+# or
+pip install fastapi[standard] motor pydantic-settings python-dotenv
+```
+
+Configuration (.env)
+Create a `.env` file in the repository root with the following variables:
+
+```env
+MONGODB_URI=mongodb://user:pass@host:27017
+MONGODB_DATABASE=naboodb
+```
+
+Run (development)
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-Visit http://localhost:8000
+API
+- Health check: GET /health
+- List characters: GET /characters
+- List factions: GET /factions
+- List spaceships: GET /spaceships
+- List worlds: GET /worlds
 
-## Project Structure
+OpenAPI docs:
+- Interactive UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
 
+Example curl
+
+```bash
+curl http://localhost:8000/characters
+```
+
+Models (high level)
+- StarWarsModel (base): id (_id), name, appearances
+- Character: affiliation, homeworld, species
+- Faction: type, era
+- Spaceship: model, manufacturer, affiliation
+- World: region, sector, affiliation
+
+Project structure
+
+```text
 NabooProject/
-│
 ├── app/
 │   ├── main.py                  # FastAPI app + lifespan (MongoDB init)
-│   │
 │   ├── core/
-│   │   ├── config.py            # Settings (Pydantic v2)
-│   │   └── database.py          # MongoDB connection + get_db()
-│   │
-│   ├── models/                  # Pydantic Schemas
-│   │
-│   ├── routes/                  # HTTP Layer
-│   │
-│   └── __init__.py
-│
-├── .env                         # MongoDB URI, DB name, secrets
-├── pyproject.toml               # Dependencies (uv-managed)
+│   │   ├── config.py            # Settings (pydantic-settings)
+│   │   └── database.py          # Motor client and get_db()
+│   ├── models/                  # Pydantic models (StarWarsModel + types)
+│   └── routes/                  # Route modules for each resource
+├── .env                         # local env (not checked in)
+├── pyproject.toml               # project metadata & deps
 └── README.md
+```
 
-## Learn More
+Notes for developers
+- The app uses a lifespan context (in `app.main`) to open/close the MongoDB connection.
+- `app.models.object_id.PyObjectId` provides Pydantic v2 integration for BSON ObjectIds.
+- `app.routes.*` modules return Pydantic models which are serialized to JSON (ObjectId -> str).
+- Ensure your `.env` is present before running the server, otherwise the DB connection will fail.
 
-- [FastAPI Documentation](https://fastapi.tiangolo.com)
-- [FastAPI Cloud](https://fastapicloud.com)
+Links
+- FastAPI: https://fastapi.tiangolo.com
