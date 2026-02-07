@@ -1,0 +1,57 @@
+name: Tests
+
+on:
+  push:
+    branches: ["develop"]
+  pull_request:
+    branches: ["develop"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:6
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongo --eval 'db.adminCommand(\"ping\")'" --health-interval=10s --health-timeout=5s --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install uv
+          uv sync --extra dev --python "$(which python)"
+
+      - name: Wait for MongoDB
+        run: |
+          python - <<'PY'
+          import socket, time, sys
+          for _ in range(20):
+              try:
+                  s = socket.socket()
+                  s.connect(("127.0.0.1", 27017))
+                  s.close()
+                  print("MongoDB reachable")
+                  break
+              except Exception:
+                  time.sleep(1)
+          else:
+              print("Timed out waiting for MongoDB")
+              sys.exit(1)
+          PY
+
+      - name: Run tests
+        env:
+          MONGODB_URI: "mongodb://127.0.0.1:27017"
+          MONGODB_DATABASE: "naboo_test"
+        run: pytest --verbose
+
