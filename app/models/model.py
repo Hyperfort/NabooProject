@@ -7,4 +7,8 @@ class StarWarsModel(BaseModel):
     name: str
     appearances: list[str]
 
-    model_config = ConfigDict(populate_by_name=True, json_encoders={PyObjectId: str})
+    model_config = ConfigDict(
+        populate_by_name=True,
+        arbitrary_types_allowed=True,
+        json_encoders={PyObjectId: str},
+    )
