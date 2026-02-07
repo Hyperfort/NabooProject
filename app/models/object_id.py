@@ -2,6 +2,7 @@ from bson import ObjectId
 from pydantic import GetCoreSchemaHandler
 from pydantic_core import core_schema
 
+
 class PyObjectId(ObjectId):
     @classmethod
     def __get_pydantic_core_schema__(cls, source, handler: GetCoreSchemaHandler):

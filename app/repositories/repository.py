@@ -1,5 +1,6 @@
 from app.core.database import get_db
 
+
 class StarWarsRepository:
     collection_name: str = None
 
