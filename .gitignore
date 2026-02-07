@@ -1,0 +1,58 @@
+# -------------------------
+# Python cache & artifacts
+# -------------------------
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.pkl
+
+# -------------------------
+# Virtual environments
+# -------------------------
+.venv/
+venv/
+env/
+
+# -------------------------
+# FastAPI / Uvicorn
+# -------------------------
+# Uvicorn reload artifacts
+*.reload
+
+# -------------------------
+# Environment variables
+# -------------------------
+.env
+.env.*
+!.env.example
+
+# -------------------------
+# Pyproject / uv build files
+# -------------------------
+.pytest_cache/
+dist/
+build/
+*.egg-info/
+
+# -------------------------
+# IDE / Editor files
+# -------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# -------------------------
+# OS-specific files
+# -------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# Docker
+# -------------------------
+docker-compose.override.yml
+.dockerignore
