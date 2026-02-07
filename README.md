@@ -23,7 +23,6 @@ source .venv/bin/activate
 2. Install dependencies:
 
 ```bash
-# sync runtime deps into the active venv
 uv sync --extra dev --python .venv/bin/python
 ```
 
