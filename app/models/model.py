@@ -1,5 +1,5 @@
 from app.models.object_id import PyObjectId
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
 
 class StarWarsModel(BaseModel):
@@ -10,5 +10,8 @@ class StarWarsModel(BaseModel):
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
-        json_encoders={PyObjectId: str},
     )
+
+    @field_serializer("id")
+    def _serialize_id(self, v):
+        return str(v)

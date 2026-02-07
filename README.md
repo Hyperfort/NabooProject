@@ -23,9 +23,10 @@ source .venv/bin/activate
 2. Install dependencies:
 
 ```bash
-pip install -e ".[dev]" || pip install -r <your dependency list or use pyproject.toml>
-# or
-pip install fastapi[standard] motor pydantic-settings python-dotenv
+# sync runtime deps into the active venv
+uv sync --python .venv/bin/python
+# or include development extras
+uv sync --extra dev --python .venv/bin/python
 ```
 
 Configuration (.env)
@@ -90,3 +91,13 @@ Notes for developers
 
 Links
 - FastAPI: https://fastapi.tiangolo.com
+
+Running tests
+----------------
+
+Unit tests are provided in the `tests/` directory and use `pytest` (including `pytest-asyncio`).
+
+```bash
+# run the test suite
+.venv/bin/pytest
+```
