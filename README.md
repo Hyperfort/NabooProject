@@ -24,8 +24,6 @@ source .venv/bin/activate
 
 ```bash
 # sync runtime deps into the active venv
-uv sync --python .venv/bin/python
-# or include development extras
 uv sync --extra dev --python .venv/bin/python
 ```
 
@@ -33,8 +31,8 @@ Configuration (.env)
 Create a `.env` file in the repository root with the following variables:
 
 ```env
-MONGODB_URI=mongodb://user:pass@host:27017
-MONGODB_DATABASE=naboodb
+MONGODB_URI=mongodb://localhost:27017
+MONGODB_DATABASE=naboo_project
 ```
 
 Run (development)
