@@ -1,6 +1,6 @@
 # NabooProject
 
-A project created with FastAPI CLI.
+An unofficial Star Wars‑inspired API that provides structured data about characters, factions, spaceships, and worlds—built for developers who want a simple, modern way to explore a galaxy’s worth of information.
 
 ## Quick Start
 
