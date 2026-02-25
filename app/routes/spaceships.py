@@ -7,6 +7,6 @@ router = APIRouter()
 _service = SpaceshipService()
 
 
-@router.get("/", response_model=list[Spaceship])
+@router.get("", response_model=list[Spaceship])
 async def list_spaceships():
     return await _service.list()

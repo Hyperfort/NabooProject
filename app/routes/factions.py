@@ -7,6 +7,6 @@ router = APIRouter()
 _service = FactionService()
 
 
-@router.get("/", response_model=list[Faction])
+@router.get("", response_model=list[Faction])
 async def list_factions():
     return await _service.list()

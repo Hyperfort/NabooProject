@@ -7,6 +7,6 @@ router = APIRouter()
 _service = WorldService()
 
 
-@router.get("/", response_model=list[World])
+@router.get("", response_model=list[World])
 async def list_worlds():
     return await _service.list()

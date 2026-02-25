@@ -7,6 +7,6 @@ router = APIRouter()
 _service = CharacterService()
 
 
-@router.get("/", response_model=list[Character])
+@router.get("", response_model=list[Character])
 async def list_characters():
     return await _service.list()
