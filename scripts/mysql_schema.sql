@@ -1,0 +1,34 @@
+CREATE TABLE IF NOT EXISTS characters (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    appearances JSON NOT NULL,
+    affiliation VARCHAR(255) NOT NULL,
+    homeworld VARCHAR(255) NOT NULL,
+    species VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS factions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    appearances JSON NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    era JSON NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS spaceships (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    appearances JSON NOT NULL,
+    model VARCHAR(255) NOT NULL,
+    manufacturer VARCHAR(255) NOT NULL,
+    affiliation VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS worlds (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    appearances JSON NOT NULL,
+    region VARCHAR(255) NOT NULL,
+    sector VARCHAR(255) NOT NULL,
+    affiliation VARCHAR(255) NOT NULL
+);

@@ -1,8 +1,8 @@
 import pytest
 from bson import ObjectId
 
-from app.models.object_id import PyObjectId
 from app.models.model import StarWarsModel
+from app.models.object_id import PyObjectId
 
 
 def test_pyobjectid_validate_with_objectid():
@@ -23,6 +23,6 @@ def test_pyobjectid_validate_invalid():
 
 
 def test_starwarsmodel_json_encodes_id_as_string():
-    m = StarWarsModel(name="Luke", appearances=["A New Hope"])
+    m = StarWarsModel(_id="507f1f77bcf86cd799439011", name="Luke", appearances=["A New Hope"])
     j = m.model_dump_json()
-    assert str(m.id) in j
+    assert "507f1f77bcf86cd799439011" in j

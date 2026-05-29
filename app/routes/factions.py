@@ -1,12 +1,15 @@
-from app.core.database import get_db
+from app.api.dependencies import get_faction_service
+from app.api.mappers import faction_to_schema
+from app.application.services.faction_service import FactionService
 from app.models.faction import Faction
-from app.services.faction_service import FactionService
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 router = APIRouter()
-_service = FactionService()
 
 
 @router.get("", response_model=list[Faction])
-async def list_factions():
-    return await _service.list()
+async def list_factions(
+    service: FactionService = Depends(get_faction_service),
+):
+    entities = await service.list()
+    return [faction_to_schema(entity) for entity in entities]

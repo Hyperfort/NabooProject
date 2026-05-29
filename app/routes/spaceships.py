@@ -1,12 +1,15 @@
-from app.core.database import get_db
+from app.api.dependencies import get_spaceship_service
+from app.api.mappers import spaceship_to_schema
+from app.application.services.spaceship_service import SpaceshipService
 from app.models.spaceship import Spaceship
-from app.services.spaceship_service import SpaceshipService
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 router = APIRouter()
-_service = SpaceshipService()
 
 
 @router.get("", response_model=list[Spaceship])
-async def list_spaceships():
-    return await _service.list()
+async def list_spaceships(
+    service: SpaceshipService = Depends(get_spaceship_service),
+):
+    entities = await service.list()
+    return [spaceship_to_schema(entity) for entity in entities]

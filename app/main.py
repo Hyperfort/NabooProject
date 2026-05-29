@@ -1,16 +1,16 @@
-from app.core.database import close_mongodb_connection, open_mongodb_connection
-from app.routes import characters, factions, spaceships, worlds
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
+
+from app.core.database_lifecycle import close_database_connection, open_database_connection
+from app.routes import characters, factions, spaceships, worlds
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup
-    await open_mongodb_connection()
+    await open_database_connection()
     yield
-    # Shutdown
-    await close_mongodb_connection()
+    await close_database_connection()
 
 
 openapi_tags = [

@@ -1,17 +1,9 @@
-from app.models.object_id import PyObjectId
-from pydantic import BaseModel, ConfigDict, Field, field_serializer
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class StarWarsModel(BaseModel):
-    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    id: str = Field(alias="_id")
     name: str
     appearances: list[str]
 
-    model_config = ConfigDict(
-        populate_by_name=True,
-        arbitrary_types_allowed=True,
-    )
-
-    @field_serializer("id")
-    def _serialize_id(self, v):
-        return str(v)
+    model_config = ConfigDict(populate_by_name=True)
