@@ -12,7 +12,6 @@ async def open_mysql_connection() -> None:
         port=settings.MYSQL_PORT,
         user=settings.MYSQL_USER,
         password=settings.MYSQL_PASSWORD,
-        db=settings.MYSQL_DATABASE,
         autocommit=True,
     )
 

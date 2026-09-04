@@ -6,6 +6,7 @@ from app.adapters.outbound.mysql.mappers import (
     row_to_spaceship,
     row_to_world,
 )
+from app.core.config import settings
 from app.core.mysql_database import get_mysql_pool
 from app.domain.entities import (
     CharacterEntity,
@@ -30,12 +31,16 @@ async def _fetch_rows(query: str, limit: int) -> list[dict]:
     return list(rows)
 
 
+def _table(name: str) -> str:
+    return f"{settings.MYSQL_DATABASE}.{name}"
+
+
 class MySQLCharacterRepository(CharacterRepositoryPort):
     async def list(self, limit: int) -> list[CharacterEntity]:
         rows = await _fetch_rows(
-            """
+            f"""
             SELECT id, name, appearances, affiliation, homeworld, species
-            FROM characters
+            FROM {_table("characters")}
             LIMIT %s
             """,
             limit,
@@ -46,9 +51,9 @@ class MySQLCharacterRepository(CharacterRepositoryPort):
 class MySQLFactionRepository(FactionRepositoryPort):
     async def list(self, limit: int) -> list[FactionEntity]:
         rows = await _fetch_rows(
-            """
+            f"""
             SELECT id, name, appearances, type, era
-            FROM factions
+            FROM {_table("factions")}
             LIMIT %s
             """,
             limit,
@@ -59,9 +64,9 @@ class MySQLFactionRepository(FactionRepositoryPort):
 class MySQLSpaceshipRepository(SpaceshipRepositoryPort):
     async def list(self, limit: int) -> list[SpaceshipEntity]:
         rows = await _fetch_rows(
-            """
+            f"""
             SELECT id, name, appearances, model, manufacturer, affiliation
-            FROM spaceships
+            FROM {_table("spaceships")}
             LIMIT %s
             """,
             limit,
@@ -72,9 +77,9 @@ class MySQLSpaceshipRepository(SpaceshipRepositoryPort):
 class MySQLWorldRepository(WorldRepositoryPort):
     async def list(self, limit: int) -> list[WorldEntity]:
         rows = await _fetch_rows(
-            """
+            f"""
             SELECT id, name, appearances, region, sector, affiliation
-            FROM worlds
+            FROM {_table("worlds")}
             LIMIT %s
             """,
             limit,
