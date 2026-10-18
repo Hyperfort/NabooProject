@@ -119,6 +119,29 @@ Verify that the API and database connection are ready:
 curl http://localhost:8000/health
 ```
 
+## Run with Rancher Desktop
+
+Start Rancher Desktop with the Moby/Docker container engine enabled. Ensure MongoDB is available from the host on port `27017`. From the repository root, build the image and start the API container:
+
+```bash
+docker build -t naboo-api:dev .
+docker run --detach \
+  --name naboo-api \
+  --restart unless-stopped \
+  --publish 8000:8000 \
+  --env DATABASE_PROVIDER=mongodb \
+  --env MONGODB_URI=mongodb://host.docker.internal:27017 \
+  --env MONGODB_DATABASE=naboo_project \
+  naboo-api:dev
+```
+
+Check the API at http://localhost:8000/health. To stop and remove the container:
+
+```bash
+docker stop naboo-api
+docker rm naboo-api
+```
+
 ## API
 
 | Method | Path | Description |
