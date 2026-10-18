@@ -18,8 +18,6 @@ The service uses a **ports-and-adapters** layout: domain entities and repository
 - Python 3.12+
 - **MongoDB** (default): a running instance and connection URI, with collections `characters`, `factions`, `spaceships`, and `worlds`
 - **MySQL** (optional): MySQL 8+ with schema applied from `scripts/mysql_schema.sql`
-- **Vitess** (optional): a running local Kubernetes cluster with `vtgate` exposed through a port-forward
-
 ## Install
 
 1. Create and activate a virtual environment:
@@ -68,48 +66,11 @@ mysql -u root -p naboo_project < scripts/mysql_schema.sql
 
 JSON columns (`appearances`, `era`) store list fields; integer primary keys are exposed in API responses as string `id` values (via the `_id` alias).
 
-### Vitess
-
-The application connects to Vitess through the MySQL-compatible `vtgate` endpoint. For the local Kubernetes setup, configure `.env` with the `vtgate` host port and the Vitess application credentials:
-
-```env
-DATABASE_PROVIDER=mysql
-MYSQL_HOST=127.0.0.1
-MYSQL_PORT=15306
-MYSQL_USER=vt_app
-MYSQL_PASSWORD=your-vitess-password
-MYSQL_DATABASE=naboo_project
-```
-
-Make sure the Kubernetes cluster is running, then verify the Vitess pods and locate the `vtgate` service:
-
-```bash
-kubectl get pods -A | grep -Ei 'vitess|naboo'
-kubectl get svc -A | grep -Ei 'vitess|vtgate'
-```
-
-Forward the `vtgate` MySQL port to the host. Keep this terminal open while running the API:
-
-```bash
-kubectl port-forward -n default \
-    svc/naboo-vitess-cluster-vtgate-f41759df \
-    15306:3306
-```
-
-Use the service name shown by `kubectl get svc` if it differs in your cluster. Ensure the Vitess keyspace and `naboo_project` schema are initialized before starting the application.
-
 ## Run (development)
 
 With MongoDB or a local MySQL server, start the API with:
 
 ```bash
-uvicorn app.main:app --reload
-```
-
-With Vitess, use two terminals. In the first terminal, keep the `vtgate` port-forward running. In the second terminal:
-
-```bash
-source .venv/bin/activate
 uvicorn app.main:app --reload
 ```
 
